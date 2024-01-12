@@ -30,35 +30,33 @@ namespace Identity
             var connectionString = Configuration.GetConnectionString("ConfamAppIdentityDb");
 
             services.AddDbContext<ConfamAppIdentityDbContext>(options =>
-              options.UseSqlServer(connectionString));
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("ConfamAppIdentityDb"));
+                options.UseOpenIddict();
+
+            });
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ConfamAppIdentityDbContext>().AddDefaultTokenProviders();
 
+            services.AddOpenIddict()
+                    .AddCore(options =>
+                    {
+                        options.UseEntityFrameworkCore()
+                               .UseDbContext<ConfamAppIdentityDbContext>();
+                    });
 
-            var builder = services.AddIdentityServer(options =>
-            {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
-            })
-            .AddConfigurationStore(options =>
-            {
-                options.ConfigureDbContext = b => b.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
-            })
-            .AddOperationalStore(options =>
-            {
-                options.ConfigureDbContext = b => b.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
-            })
-            .AddAspNetIdentity<ApplicationUser>();
+
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var environmentName = env.EnvironmentName;
 
             if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
+
+            }
             else
                 app.UseHsts();
             if (environmentName == "local" || environmentName == "Development")
@@ -71,7 +69,6 @@ namespace Identity
                 });
             }
             app.UseRouting();
-            app.UseIdentityServer();
 
             app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseAuthentication();

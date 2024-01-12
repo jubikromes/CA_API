@@ -2,6 +2,7 @@
 using Application;
 using Application.Extensions;
 using Microsoft.OpenApi.Models;
+using System.IdentityModel.Tokens.Jwt;
 namespace API
 {
     public class Startup
@@ -15,10 +16,27 @@ namespace API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             //if (env == "local" || env == "Development")
             services.AddSwagger();
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "Cookies";
+                options.DefaultChallengeScheme = "oidc";
+            })
+            .AddCookie("Cookies")
+            .AddOpenIdConnect("oidc", options =>
+            {
+                options.Authority = "http://localhost:5017";
+
+                options.ClientId = "mvc";
+                options.ClientSecret = "secret";
+                options.ResponseType = "code";
+
+                options.SaveTokens = true;
+            });
             services.ConfigureApplication();
             services.ConfigureInfrastructure(Configuration);
 
@@ -56,7 +74,9 @@ namespace API
 
                 app.UseEndpoints(endpoints =>
                 {
-                    endpoints.MapControllers();
+                    endpoints.MapDefaultControllerRoute()
+                        .RequireAuthorization();
+                    //endpoints.MapControllers();
                 });
             }
         }
