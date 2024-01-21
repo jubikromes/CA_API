@@ -3,6 +3,7 @@ using Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
@@ -23,7 +24,7 @@ namespace Identity
         {
 
             AddSwagger(services);
-
+ 
             services.AddControllersWithViews();
 
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
@@ -37,15 +38,8 @@ namespace Identity
             });
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ConfamAppIdentityDbContext>().AddDefaultTokenProviders();
-
-            services.AddOpenIddict()
-                    .AddCore(options =>
-                    {
-                        options.UseEntityFrameworkCore()
-                               .UseDbContext<ConfamAppIdentityDbContext>();
-                    });
-
+                .AddEntityFrameworkStores<ConfamAppIdentityDbContext>()
+                .AddDefaultTokenProviders();
 
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

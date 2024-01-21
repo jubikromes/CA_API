@@ -9,6 +9,10 @@
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="EasyCaching.InMemory" Version="1.9.2" />
+	</ItemGroup>
 	
 
 </Project>
