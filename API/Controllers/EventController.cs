@@ -17,7 +17,7 @@ namespace API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("addevent")]
+        [HttpPost("add-event")]
         public async Task<IActionResult> AddEvent(AddEventCommand command)
         {
             await   

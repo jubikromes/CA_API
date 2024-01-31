@@ -1,27 +1,23 @@
-﻿using Identity.Entities;
+﻿using Identity.Application.Commands;
+using Identity.Entities;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Models;
 
-namespace Identity.Controllers
+namespace Identity.Controllers;
+
+[ApiController]
+public class RegisterController(IMediator mediator) : ControllerBase
 {
-    [Route("api")]
-    [ApiController]
-    public class RegisterController : ControllerBase
-    {
-        private readonly UserManager<ApplicationUser> _userManager;
-        public RegisterController(UserManager<ApplicationUser> userManager)
-        {
-            _userManager = userManager;
-        }
+    private readonly IMediator _mediator = mediator;
 
-        [HttpGet("register-customer")]
-        public async Task RegisterCustomer(RegisterCustomerViewModel model)
-        {
-            await _userManager.CreateAsync(new ApplicationUser
-            {
-                Email = model.Email,
-                PhoneNumber = model.PhoneNumber,
-            }, password: model.Password);
-        }
+    [HttpPost("register-customer")]
+    [AllowAnonymous]
+    public async Task<Result> RegisterCustomer(CreateCustomerUserCommand model)
+    {
+       return await _mediator.Send(model);
     }
+
 }

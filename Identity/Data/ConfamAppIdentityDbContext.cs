@@ -5,13 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Data
 {
-    public class ConfamAppIdentityDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string,
-    IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>
+    public class ConfamAppIdentityDbContext(DbContextOptions<ConfamAppIdentityDbContext> options) : IdentityDbContext<ApplicationUser, ApplicationRole, string,
+    IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>(options)
     {
-        public ConfamAppIdentityDbContext(DbContextOptions<ConfamAppIdentityDbContext> options) : base(options)
-        {
-        }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -82,6 +78,8 @@ namespace Identity.Data
                         UserName = "milad.ashrafi@gmail.com",
                         NormalizedUserName = "MILAD.ASHRAFI@GMAIL.COM",
                         PhoneNumberConfirmed = true,
+                        CountryCode = "NGN",
+                        PhoneCode = "234",
                         PasswordHash = "AQAAAAIAAYagAAAAEK1W3FMebsaQ5p6sqwXybnO6AdMcllqC99NBccKaS99FJZji0MmRjLfY4vMAR/ldRA=="
                     },
                     new ApplicationUser
@@ -97,6 +95,8 @@ namespace Identity.Data
                         UserName = "ashrafi.milad@gmail.com",
                         NormalizedUserName = "ASHRAFI.MILAD@GMAIL.COM",
                         PhoneNumberConfirmed = true,
+                        CountryCode = "NGN",
+                        PhoneCode = "234",
                         PasswordHash = "AQAAAAIAAYagAAAAEK1W3FMebsaQ5p6sqwXybnO6AdMcllqC99NBccKaS99FJZji0MmRjLfY4vMAR/ldRA=="
                     });
             });

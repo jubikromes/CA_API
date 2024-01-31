@@ -23,7 +23,6 @@ namespace Application
 
             services.AddExceptionHandler<GlobalExceptionHandler>();
             services.AddProblemDetails();
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
 
             return services;
         }
