@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Identity.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,6 +32,8 @@ namespace Identity.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CountryCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -56,7 +58,9 @@ namespace Identity.Migrations
                 name: "OpenIddictApplications",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AppId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Language = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ApplicationType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     ClientId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     ClientSecret = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -82,7 +86,7 @@ namespace Identity.Migrations
                 name: "OpenIddictScopes",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ConcurrencyToken = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Descriptions = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -207,8 +211,8 @@ namespace Identity.Migrations
                 name: "OpenIddictAuthorizations",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ApplicationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ConcurrencyToken = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Properties = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -231,9 +235,9 @@ namespace Identity.Migrations
                 name: "OpenIddictTokens",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ApplicationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    AuthorizationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    AuthorizationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ConcurrencyToken = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -271,11 +275,11 @@ namespace Identity.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CountryCode", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneCode", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "c784d6e7-4424-4fe1-a1bb-b03c6a9a26cb", 0, "2fe7f8d5-d321-4c77-884b-73ea438b1511", "milad.ashrafi@gmail.com", true, true, null, "MILAD.ASHRAFI@GMAIL.COM", "MILAD.ASHRAFI@GMAIL.COM", "AQAAAAIAAYagAAAAEK1W3FMebsaQ5p6sqwXybnO6AdMcllqC99NBccKaS99FJZji0MmRjLfY4vMAR/ldRA==", "09127372975", true, "LJNTPIYBD4KN2CFESBRMRL2YDQOXANQ4", false, "milad.ashrafi@gmail.com" },
-                    { "f0dccee8-a3e1-45f8-9bb7-f7e7decebd09", 0, "6b263a8b-120f-4f48-a6bd-ad3a9c4c913d", "ashrafi.milad@gmail.com", true, true, null, "ASHRAFI.MILAD@GMAIL.COM", "ASHRAFI.MILAD@GMAIL.COM", "AQAAAAIAAYagAAAAEK1W3FMebsaQ5p6sqwXybnO6AdMcllqC99NBccKaS99FJZji0MmRjLfY4vMAR/ldRA==", "09127372975", true, "OHACRUB556PUCIJOKNPX6QMTHA5G77DG", false, "ashrafi.milad@gmail.com" }
+                    { "c784d6e7-4424-4fe1-a1bb-b03c6a9a26cb", 0, "2fe7f8d5-d321-4c77-884b-73ea438b1511", "NGN", "milad.ashrafi@gmail.com", true, true, null, "MILAD.ASHRAFI@GMAIL.COM", "MILAD.ASHRAFI@GMAIL.COM", "AQAAAAIAAYagAAAAEK1W3FMebsaQ5p6sqwXybnO6AdMcllqC99NBccKaS99FJZji0MmRjLfY4vMAR/ldRA==", "234", "09127372975", true, "LJNTPIYBD4KN2CFESBRMRL2YDQOXANQ4", false, "milad.ashrafi@gmail.com" },
+                    { "f0dccee8-a3e1-45f8-9bb7-f7e7decebd09", 0, "6b263a8b-120f-4f48-a6bd-ad3a9c4c913d", "NGN", "ashrafi.milad@gmail.com", true, true, null, "ASHRAFI.MILAD@GMAIL.COM", "ASHRAFI.MILAD@GMAIL.COM", "AQAAAAIAAYagAAAAEK1W3FMebsaQ5p6sqwXybnO6AdMcllqC99NBccKaS99FJZji0MmRjLfY4vMAR/ldRA==", "234", "09127372975", true, "OHACRUB556PUCIJOKNPX6QMTHA5G77DG", false, "ashrafi.milad@gmail.com" }
                 });
 
             migrationBuilder.InsertData(

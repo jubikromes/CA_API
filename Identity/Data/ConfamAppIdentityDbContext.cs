@@ -5,14 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Identity.Data
 {
-    public class ConfamAppIdentityDbContext(DbContextOptions<ConfamAppIdentityDbContext> options) : IdentityDbContext<ApplicationUser, ApplicationRole, string,
-    IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>(options)
+    public class ConfamAppIdentityDbContext(DbContextOptions<ConfamAppIdentityDbContext> options) : 
+        IdentityDbContext<ApplicationUser, ApplicationRole, string, IdentityUserClaim<string>, ApplicationUserRole, IdentityUserLogin<string>, 
+        IdentityRoleClaim<string>, 
+        IdentityUserToken<string>>(options)
     {
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            base.OnModelCreating(builder);
             builder.Entity<ApplicationUserRole>(userRole =>
             {
                 userRole.HasKey(ur => new { ur.UserId, ur.RoleId });
@@ -113,6 +114,8 @@ namespace Identity.Data
                     RoleId = "03B11179-8A33-4D3B-8092-463249F755A5"
                 });
             });
+
+
         }
     }
 }

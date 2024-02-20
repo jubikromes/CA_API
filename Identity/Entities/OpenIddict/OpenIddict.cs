@@ -5,9 +5,9 @@ namespace OpenIddictSetUp.Entities
     public class OpenIddict
     {
     }
-    public class ConfamAppIddictApplication : OpenIddictEntityFrameworkCoreApplication<Guid, AppOpenIddictAuthorization, AppOpenIddictToken>
+    public class OpenIddictApplication : OpenIddictEntityFrameworkCoreApplication<Guid, OpenIddictAuthorization, OpenIddictToken>
     {
-        public ConfamAppIddictApplication()
+        public OpenIddictApplication()
         {
             Id = Guid.NewGuid();
         }
@@ -15,9 +15,9 @@ namespace OpenIddictSetUp.Entities
         public string? Language { get; set; }
     }
 
-    public class AppOpenIddictAuthorization : OpenIddictEntityFrameworkCoreAuthorization<Guid, ConfamAppIddictApplication, AppOpenIddictToken> { }
-    public class AppOpenIddictScope : OpenIddictEntityFrameworkCoreScope<Guid> { }
-    public class AppOpenIddictToken : OpenIddictEntityFrameworkCoreToken<Guid, ConfamAppIddictApplication, AppOpenIddictAuthorization> { }
+    public class OpenIddictAuthorization : OpenIddictEntityFrameworkCoreAuthorization<Guid, OpenIddictApplication, OpenIddictToken> { }
+    public class OpenIddictScope : OpenIddictEntityFrameworkCoreScope<Guid> { }
+    public class OpenIddictToken : OpenIddictEntityFrameworkCoreToken<Guid, OpenIddictApplication, OpenIddictAuthorization> { }
 
 
 }

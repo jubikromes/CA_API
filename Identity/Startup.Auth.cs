@@ -6,7 +6,7 @@ using OpenIddictSetUp.Entities;
 using OpenIddictSetUp.OpenIddict;
 using System.Security.Cryptography.X509Certificates;
 
-namespace OpenIddictSetUp;
+namespace Identity;
 
 public static partial class Startup
 {
@@ -42,7 +42,7 @@ public static partial class Startup
             {
                 options.UseEntityFrameworkCore()
                 .UseDbContext<ConfamAppIdentityDbContext>()
-                .ReplaceDefaultEntities<ConfamAppIddictApplication, AppOpenIddictAuthorization, AppOpenIddictScope, AppOpenIddictToken, Guid>();
+                .ReplaceDefaultEntities<OpenIddictApplication, OpenIddictAuthorization, OpenIddictScope, OpenIddictToken, Guid >();
             })
 
             .AddServer(async options =>

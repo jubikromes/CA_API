@@ -11,7 +11,7 @@ public static class OpenIddictManager
         await using var scope = builder.Services.CreateAsyncScope();
 
         var serviceProvider = scope.ServiceProvider;
-        var manager = serviceProvider.GetRequiredService<OpenIddictApplicationManager<ConfamAppIddictApplication>>();
+        var manager = serviceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication>>();
         var publicUrl = builder.Configuration.GetSection("OpenId").GetValue<string>("PublicUrl");
         var clientConfigurationProvider = serviceProvider.GetService<IOpenIddictClientConfigurationProvider>();
 

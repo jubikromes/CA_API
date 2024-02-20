@@ -1,47 +1,46 @@
 
+
 using Identity;
 
-var configuration = GetConfiguration();
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+builder.ConfigureServices();
+builder.ConfigureAuth();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+app.OpenIddictSeeder();
+// Configure the HTTP request pipeline.
+var environmentName = builder.Environment.EnvironmentName;
+
+if (builder.Environment.IsDevelopment())
+    app.UseDeveloperExceptionPage();
+else
+    app.UseHsts();
+
+app.UseExceptionHandler();
 
 
-try
+if (environmentName == "local" || environmentName == "Development")
 {
-    var host = CreateWebHostBuilder(configuration, args);
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
     {
-        IHost builder = host.Build();
-        builder.Run();
-    }
-
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Equity Bank Bank Transfer API v1");
+        c.RoutePrefix = string.Empty;
+    });
 }
-catch (Exception ex)
-{
-    Console.WriteLine(ex.ToString());
-}
+app.UseRouting();
 
-finally
-{
-
-}
-
-IHostBuilder CreateWebHostBuilder(IConfiguration configuration, string[] args) =>
-    Host.CreateDefaultBuilder(args)
-        .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-            })
-        .UseContentRoot(Directory.GetCurrentDirectory());
-
-
-IConfiguration GetConfiguration()
-{
-    var builder = new ConfigurationBuilder()
-        .SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-        .AddEnvironmentVariables()
-        .AddUserSecrets<Program>(true);
-
-    var config = builder.Build();
-
-    return builder.Build();
-}
+app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+app.Run();
